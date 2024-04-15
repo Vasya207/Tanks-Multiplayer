@@ -7,4 +7,9 @@ public class JoinServer : MonoBehaviour
     {
         NetworkManager.Singleton.StartClient();
     }
+
+    public void Host()
+    {
+        NetworkManager.Singleton.StartHost();
+    }
 }
