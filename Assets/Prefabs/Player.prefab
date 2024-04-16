@@ -320,8 +320,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6103594507747366118}
+  - component: {fileID: 1816133337565128303}
   - component: {fileID: 8290962729473485199}
   - component: {fileID: 4934699373185912946}
+  - component: {fileID: 6224941061549540125}
+  - component: {fileID: 8718127953426997528}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -346,6 +349,33 @@ Transform:
   - {fileID: 5708191996389424660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1816133337565128303
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7882699097577144674}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &8290962729473485199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,6 +428,37 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &6224941061549540125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7882699097577144674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e7a3769d6e47043b3b7725c39df366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: eecc6d7c10d393540943401fa6cb99f3, type: 2}
+  bodyTransform: {fileID: 9126163978674629974}
+  rigidbody2D: {fileID: 1816133337565128303}
+  movementSpeed: 5
+  turningRate: 270
+--- !u!114 &8718127953426997528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7882699097577144674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52d7c6735b871a44a8ab2f9a215694a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: eecc6d7c10d393540943401fa6cb99f3, type: 2}
+  turretTransform: {fileID: 5708191996389424660}
 --- !u!1 &8084139049569065705
 GameObject:
   m_ObjectHideFlags: 0

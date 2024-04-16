@@ -10,6 +10,8 @@ namespace Input
     {
         public event Action<bool> PrimaryFireEvent; 
         public event Action<Vector2> MoveEvent;
+
+        public Vector2 AimPosition { get; private set; }
         
         private Controls _controls;
 
@@ -39,6 +41,11 @@ namespace Input
             {
                 PrimaryFireEvent?.Invoke(false);
             }
+        }
+
+        public void OnAim(InputAction.CallbackContext context)
+        {
+            AimPosition = context.ReadValue<Vector2>();
         }
     }
 }
