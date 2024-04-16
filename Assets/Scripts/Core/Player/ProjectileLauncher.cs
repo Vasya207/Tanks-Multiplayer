@@ -12,11 +12,17 @@ namespace Core.Player
         [SerializeField] private Transform projectileSpawnPoint;
         [SerializeField] private GameObject serverProjectilePrefab;
         [SerializeField] private GameObject clientProjectilePrefab;
+        [SerializeField] private GameObject muzzleFlash;
+        [SerializeField] private Collider2D playerCollider;
 
         [Header("Settings")] 
         [SerializeField] private float projectileSpeed;
+        [SerializeField] private float fireRate;
+        [SerializeField] private float muzzleFlashDuration;
 
         private bool _isFiring;
+        private float _previousFireTime;
+        private float _muzzleFlashTimer;
 
         public override void OnNetworkSpawn()
         {
@@ -34,7 +40,21 @@ namespace Core.Player
 
         private void Update()
         {
+            if (_muzzleFlashTimer > 0f)
+            {
+                _muzzleFlashTimer -= Time.deltaTime;
+
+                if (_muzzleFlashTimer <= 0f)
+                {
+                    muzzleFlash.SetActive(false);
+                }
+            }
+            
             if (!IsOwner || !_isFiring) return;
+
+            if (Time.time < (1 / fireRate) + _previousFireTime) return;
+
+            _previousFireTime = Time.time;
             
             PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
             
@@ -54,6 +74,13 @@ namespace Core.Player
             
             projectileInstance.transform.up = direction;
             
+            Physics2D.IgnoreCollision(playerCollider, projectileInstance.GetComponent<Collider2D>());
+            
+            if (projectileInstance.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+            {
+                rb.velocity = rb.transform.up * projectileSpeed;
+            }
+            
             SpawnDummyProjectileClientRpc(spawnPos, direction);
         }
 
@@ -67,10 +94,20 @@ namespace Core.Player
         
         private void SpawnDummyProjectile(Vector3 spawnPos, Vector3 direction)
         {
+            muzzleFlash.SetActive(true);
+            _muzzleFlashTimer = muzzleFlashDuration;
+            
             GameObject projectileInstance = 
                 Instantiate(clientProjectilePrefab, spawnPos, Quaternion.identity);
 
             projectileInstance.transform.up = direction;
+            
+            Physics2D.IgnoreCollision(playerCollider, projectileInstance.GetComponent<Collider2D>());
+
+            if (projectileInstance.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+            {
+                rb.velocity = rb.transform.up * projectileSpeed;
+            }
         }
     }
 }
