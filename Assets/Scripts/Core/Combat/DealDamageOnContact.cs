@@ -21,7 +21,6 @@ namespace Core.Combat
 
             if (other.attachedRigidbody.TryGetComponent<NetworkObject>(out NetworkObject networkObject))
             {
-                Debug.Log(_ownerClientId);
                 if (_ownerClientId == networkObject.OwnerClientId) return;
             }
             
