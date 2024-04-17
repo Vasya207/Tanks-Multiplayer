@@ -16,5 +16,10 @@ namespace Core.Coins
             if (!IsServer) return;
             TotalCoins.Value += coinValue;
         }
+
+        public void SpendCoins(int amountToSpend)
+        {
+            TotalCoins.Value -= amountToSpend;
+        }
     }
 }

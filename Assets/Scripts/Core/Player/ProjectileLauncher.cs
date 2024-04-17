@@ -1,14 +1,17 @@
 using System;
+using Core.Coins;
 using Core.Combat;
 using Input;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core.Player
 {
     public class ProjectileLauncher : NetworkBehaviour
     {
-        [Header("References")]
+        [Header("References")] 
+        [SerializeField] private CoinWallet coinWallet;
         [SerializeField] private InputReader inputReader;
         [SerializeField] private Transform projectileSpawnPoint;
         [SerializeField] private GameObject serverProjectilePrefab;
@@ -20,10 +23,11 @@ namespace Core.Player
         [SerializeField] private float projectileSpeed;
         [SerializeField] private float fireRate;
         [SerializeField] private float muzzleFlashDuration;
+        [SerializeField] private int costToFire;
 
         private bool _isFiring;
-        private float _previousFireTime;
         private float _muzzleFlashTimer;
+        private float _timer;
 
         public override void OnNetworkSpawn()
         {
@@ -51,15 +55,21 @@ namespace Core.Player
                 }
             }
             
-            if (!IsOwner || !_isFiring) return;
+            if (!IsOwner) return;
 
-            if (Time.time < (1 / fireRate) + _previousFireTime) return;
+            if(_timer > 0) _timer -= Time.deltaTime;
+            
+            if (!_isFiring) return;
 
-            _previousFireTime = Time.time;
+            if (_timer > 0) return;
+
+            if (coinWallet.TotalCoins.Value < costToFire) return;
             
             PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
             
             SpawnDummyProjectile(projectileSpawnPoint.position, projectileSpawnPoint.up);
+
+            _timer = 1 / fireRate;
         }
 
         private void HandlePrimaryFire(bool shouldFire)
@@ -70,6 +80,10 @@ namespace Core.Player
         [ServerRpc]
         private void PrimaryFireServerRpc(Vector3 spawnPos, Vector3 direction)
         {
+            if (coinWallet.TotalCoins.Value < costToFire) return;
+            
+            coinWallet.SpendCoins(costToFire);
+            
             GameObject projectileInstance = 
                 Instantiate(serverProjectilePrefab, spawnPos, Quaternion.identity);
             
