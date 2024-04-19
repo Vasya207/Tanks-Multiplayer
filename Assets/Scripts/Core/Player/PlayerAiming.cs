@@ -9,13 +9,13 @@ namespace Core.Player
         [SerializeField] private InputReader inputReader;
         [SerializeField] private Transform turretTransform;
 
-        private Camera _mainCamera;
+        //private Camera _mainCamera;
         
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
 
-            _mainCamera = Camera.main;
+            //_mainCamera = Camera.main;
         }
 
         private void LateUpdate()
@@ -23,7 +23,7 @@ namespace Core.Player
             if (!IsOwner) return;
 
             Vector2 aimScreenPosition = inputReader.AimPosition;
-            Vector2 aimWorldPosition = _mainCamera.ScreenToWorldPoint(aimScreenPosition);
+            Vector2 aimWorldPosition = Camera.main.ScreenToWorldPoint(aimScreenPosition);
 
             turretTransform.up = new Vector2(
                 aimWorldPosition.x - turretTransform.position.x,

@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using Networking.Host;
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour
+namespace UI
 {
-    // Start is called before the first frame update
-    void Start()
+    public class MainMenu : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public async void StartHost()
+        {
+            await HostSingleton.Instance.GameManager.StartHostAsync();
+        }
     }
 }
