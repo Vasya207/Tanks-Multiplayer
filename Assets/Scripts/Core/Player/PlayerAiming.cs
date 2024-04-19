@@ -8,14 +8,10 @@ namespace Core.Player
     {
         [SerializeField] private InputReader inputReader;
         [SerializeField] private Transform turretTransform;
-
-        //private Camera _mainCamera;
         
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
-
-            //_mainCamera = Camera.main;
         }
 
         private void LateUpdate()

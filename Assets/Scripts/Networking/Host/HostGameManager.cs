@@ -41,7 +41,7 @@ namespace Networking.Host
             }
 
             UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-            RelayServerData relayServerData = new RelayServerData(_allocation, "udp");
+            RelayServerData relayServerData = new RelayServerData(_allocation, "dtls");
             
             transport.SetRelayServerData(relayServerData);
             NetworkManager.Singleton.StartHost();
