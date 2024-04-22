@@ -6,6 +6,7 @@ using UI;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
+using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
@@ -17,11 +18,14 @@ namespace Networking.Client
     public class ClientGameManager
     {
         private JoinAllocation _allocation;
+        private NetworkClient _networkClient;
         private const string MenuSceneName = "Menu";
         
         public async Task<bool> InitAsync()
         {
             await UnityServices.InitializeAsync();
+
+            _networkClient = new NetworkClient(NetworkManager.Singleton);
 
             AuthState authState = await AuthenticationWrapper.DoAuth();
 
@@ -54,7 +58,8 @@ namespace Networking.Client
 
             UserData userData = new UserData()
             {
-                UserName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name")
+                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+                userAuthId = AuthenticationService.Instance.PlayerId
             };
             
             string payload = JsonUtility.ToJson(userData);
