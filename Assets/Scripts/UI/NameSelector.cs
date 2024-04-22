@@ -13,7 +13,7 @@ namespace UI
         [SerializeField] private int minNameLength = 1;
         [SerializeField] private int maxNameLength = 20;
 
-        private const string PlayerNameKey = "PlayerName";
+        public const string PlayerNameKey = "PlayerName";
 
         private void Start()
         {

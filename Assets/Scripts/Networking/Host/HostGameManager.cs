@@ -1,7 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
+using Networking.Server;
+using Networking.Shared;
+using UI;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -20,6 +24,7 @@ namespace Networking.Host
         private Allocation _allocation;
         private string _joinCode;
         private string _lobbyId;
+        private NetworkServer _networkServer;
         private const int MaxConnections = 20;
         
         public async Task StartHostAsync()
@@ -63,9 +68,12 @@ namespace Networking.Host
                         )
                     }
                 };
+
+                string playerName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Unknown");
+                
                 Lobby lobby = 
                     await Lobbies.Instance.CreateLobbyAsync(
-                        "My Lobby", MaxConnections, lobbyOptions);
+                        $"{playerName}'s Lobby", MaxConnections, lobbyOptions);
 
                 _lobbyId = lobby.Id;
 
@@ -76,6 +84,18 @@ namespace Networking.Host
                 Console.WriteLine(exception);
                 return;
             }
+
+            _networkServer = new NetworkServer(NetworkManager.Singleton);
+            
+            UserData userData = new UserData()
+            {
+                UserName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name")
+            };
+            
+            string payload = JsonUtility.ToJson(userData);
+            byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
+
+            NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
             
             NetworkManager.Singleton.StartHost();
 
