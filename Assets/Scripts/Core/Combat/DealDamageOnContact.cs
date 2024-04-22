@@ -21,7 +21,10 @@ namespace Core.Combat
 
             if (other.attachedRigidbody.TryGetComponent<NetworkObject>(out NetworkObject networkObject))
             {
-                if (_ownerClientId == networkObject.OwnerClientId) return;
+                if (_ownerClientId == networkObject.OwnerClientId)
+                {
+                    return;
+                }
             }
             
             if (other.attachedRigidbody.TryGetComponent<Health>(out Health health))

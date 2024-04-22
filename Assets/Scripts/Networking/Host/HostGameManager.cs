@@ -21,11 +21,11 @@ namespace Networking.Host
 {
     public class HostGameManager : IDisposable
     {
+        public NetworkServer NetworkServer { get; private set; }
         private const string GameSceneName = "Game";
         private Allocation _allocation;
         private string _joinCode;
         private string _lobbyId;
-        private NetworkServer _networkServer;
         private const int MaxConnections = 20;
         
         public async Task StartHostAsync()
@@ -86,7 +86,7 @@ namespace Networking.Host
                 return;
             }
 
-            _networkServer = new NetworkServer(NetworkManager.Singleton);
+            NetworkServer = new NetworkServer(NetworkManager.Singleton);
             
             UserData userData = new UserData()
             {
@@ -133,7 +133,7 @@ namespace Networking.Host
                 _lobbyId = string.Empty;
             }
             
-            _networkServer?.Dispose();
+            NetworkServer?.Dispose();
         }
     }
 }
