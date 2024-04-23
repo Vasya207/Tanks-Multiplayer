@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Core.Player;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UI.Leaderboard
 {
@@ -11,6 +14,7 @@ namespace UI.Leaderboard
         [SerializeField] private LeaderboardEntityDisplay leaderboardEntityPrefab;
 
         private NetworkList<LeaderboardEntityState> _leaderboardEntities;
+        private List<LeaderboardEntityDisplay> _entityDisplays = new List<LeaderboardEntityDisplay>();
 
         private void Awake()
         {
@@ -22,9 +26,9 @@ namespace UI.Leaderboard
             if (IsClient)
             {
                 _leaderboardEntities.OnListChanged += HandleLeaderboardEntitiesChanged;
-                foreach (var leaderboardEntity in _leaderboardEntities)
+                foreach (LeaderboardEntityState leaderboardEntity in _leaderboardEntities)
                 {
-                    HandleLeaderboardEntitiesChanged(new NetworkListEvent<LeaderboardEntityState>()
+                    HandleLeaderboardEntitiesChanged(new NetworkListEvent<LeaderboardEntityState>
                     {
                         Type = NetworkListEvent<LeaderboardEntityState>.EventType.Add,
                         Value = leaderboardEntity
@@ -50,9 +54,36 @@ namespace UI.Leaderboard
             switch (changeEvent.Type)
             {
                 case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
-                    Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+                    if (!_entityDisplays.Any(x => x.ClientId == changeEvent.Value.ClientId))
+                    {
+                        LeaderboardEntityDisplay leaderboardEntity = 
+                            Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+                        leaderboardEntity.Initialise(
+                            changeEvent.Value.ClientId, 
+                            changeEvent.Value.PlayerName,
+                            changeEvent.Value.Coins);
+                        _entityDisplays.Add(leaderboardEntity);
+                    }
                     break;
                 case NetworkListEvent<LeaderboardEntityState>.EventType.Remove:
+                    LeaderboardEntityDisplay displayToRemove = 
+                        _entityDisplays.FirstOrDefault(x => x.ClientId == changeEvent.Value.ClientId);
+
+                    if (displayToRemove != null)
+                    {
+                        displayToRemove.transform.SetParent(null);
+                        Destroy(displayToRemove.gameObject);
+                        _entityDisplays.Remove(displayToRemove);
+                    }
+                    break;
+                case NetworkListEvent<LeaderboardEntityState>.EventType.Value:
+                    LeaderboardEntityDisplay displayToUpdate = 
+                        _entityDisplays.FirstOrDefault(x => x.ClientId == changeEvent.Value.ClientId);
+
+                    if (displayToUpdate != null)
+                    {
+                        displayToUpdate.UpdateCoins(changeEvent.Value.Coins);
+                    }
                     break;
             }
         }
