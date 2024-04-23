@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core;
 using Networking.Shared;
 using Unity.Netcode;
 using UnityEngine;
@@ -32,6 +33,8 @@ namespace Networking.Server
             _authIdToUserData[userData.userAuthId] = userData;
 
             response.Approved = true;
+            response.Position = SpawnPoint.GetRandomSpawnPos();
+            response.Rotation = Quaternion.identity;
             response.CreatePlayerObject = true;
         }
         
