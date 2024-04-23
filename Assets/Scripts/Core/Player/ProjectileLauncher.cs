@@ -96,6 +96,11 @@ namespace Core.Player
                 rb.velocity = rb.transform.up * projectileSpeed;
             }
             
+            if (projectileInstance.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact dealDamage))
+            {
+                dealDamage.SetOwner(OwnerClientId);
+            }
+            
             SpawnDummyProjectileClientRpc(spawnPos, direction);
         }
 
