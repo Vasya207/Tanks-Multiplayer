@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using Unity.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,6 +10,7 @@ namespace UI.Leaderboard
     public class LeaderboardEntityDisplay : MonoBehaviour
     {
         [SerializeField] private TMP_Text displayText;
+        [SerializeField] private Color myColor;
 
         private FixedString32Bytes _playerName;
         public ulong ClientId { get; private set; }
@@ -18,6 +20,11 @@ namespace UI.Leaderboard
         {
             ClientId = clientId;
             _playerName = playerName;
+
+            if (clientId == NetworkManager.Singleton.LocalClientId)
+            {
+                displayText.color = myColor;
+            }
             
             UpdateCoins(coins);
         }
@@ -29,9 +36,9 @@ namespace UI.Leaderboard
             UpdateText();
         }
         
-        private void UpdateText()
+        public void UpdateText()
         {
-            displayText.text = $"1. {_playerName} - {Coins}";
+            displayText.text = $"{transform.GetSiblingIndex() + 1}. {_playerName} - {Coins}";
         }
     }
 }
