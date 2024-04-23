@@ -728,7 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1832705213
+  GlobalObjectIdHash: 2551649211
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -751,6 +751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineVirtualCamera: {fileID: 5429468366756373238}
   <Health>k__BackingField: {fileID: 1425137934397154372}
+  <Wallet>k__BackingField: {fileID: -797273157651959239}
   ownerPriority: 15
   PlayerName:
     m_InternalValue:
