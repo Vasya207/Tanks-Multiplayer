@@ -7,7 +7,8 @@ namespace Core.Combat
 {
     public class RespawnHandler : NetworkBehaviour
     {
-        [SerializeField] private NetworkObject playerPrefab;
+        [SerializeField] private TankPlayer playerPrefab;
+        [SerializeField] private float keptCoinPercentage;
 
         public override void OnNetworkSpawn()
         {
@@ -43,19 +44,21 @@ namespace Core.Combat
 
         private void HandlePlayerDie(TankPlayer player)
         {
+            int keptCoins = (int)(player.Wallet.TotalCoins.Value * (keptCoinPercentage / 100));
             Destroy(player.gameObject);
 
-            StartCoroutine(RespawnPlayer(player.OwnerClientId));
+            StartCoroutine(RespawnPlayer(player.OwnerClientId, keptCoins));
         }
 
-        private IEnumerator RespawnPlayer(ulong ownerClientId)
+        private IEnumerator RespawnPlayer(ulong ownerClientId, int keptCoins)
         {
             yield return null;
-
-            NetworkObject playerInstance = Instantiate(
+            
+            TankPlayer playerInstance = Instantiate(
                 playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
             
-            playerInstance.SpawnAsPlayerObject(ownerClientId);
+            playerInstance.NetworkObject.SpawnAsPlayerObject(ownerClientId);
+            playerInstance.Wallet.TotalCoins.Value += keptCoins;
         }
     }
 }
