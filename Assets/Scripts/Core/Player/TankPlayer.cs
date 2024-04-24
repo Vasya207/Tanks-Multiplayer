@@ -8,6 +8,7 @@ using Networking.Host;
 using Networking.Shared;
 using Unity.Collections;
 using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
 namespace Core.Player
 {
@@ -15,11 +16,13 @@ namespace Core.Player
     {
         [Header("References")]
         [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+        [SerializeField] private SpriteRenderer minimapIconRenderer;
         [field: SerializeField] public Health Health { get; private set; }
         [field: SerializeField] public CoinWallet Wallet { get; private set; }
         
         [Header("Settings")]
         [SerializeField] private int ownerPriority = 15;
+        [SerializeField] private Color ownerColor;
 
         public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>();
 
@@ -41,6 +44,7 @@ namespace Core.Player
             if (IsOwner)
             {
                 cinemachineVirtualCamera.Priority = ownerPriority;
+                minimapIconRenderer.color = ownerColor;
             }
         }
 
