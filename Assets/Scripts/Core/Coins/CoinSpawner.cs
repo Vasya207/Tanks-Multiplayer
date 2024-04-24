@@ -30,7 +30,7 @@ namespace Core.Coins
 
         private void SpawnCoin()
         {
-            var coinInstance = Instantiate(coinPrefab, GetSpawnCoin(), Quaternion.identity);
+            var coinInstance = Instantiate(coinPrefab, GetSpawnPoint(), Quaternion.identity);
             
             coinInstance.SetValue(coinValue);
             coinInstance.GetComponent<NetworkObject>().Spawn();
@@ -40,11 +40,11 @@ namespace Core.Coins
 
         private void HandleCoinCollected(RespawningCoin coin)
         {
-            coin.transform.position = GetSpawnCoin();
+            coin.transform.position = GetSpawnPoint();
             coin.Reset();
         }
 
-        private Vector2 GetSpawnCoin()
+        private Vector2 GetSpawnPoint()
         {
             float x = 0f;
             float y = 0f;

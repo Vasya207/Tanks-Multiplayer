@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4261647268833028646
+--- !u!1001 &5872952721651397347
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2999298247678039930, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7bfd0a0977e81b84a8f1d12195e5883a, type: 3}
     - target: {fileID: -1433695755364425506, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 954557704
+      value: 2481204685
       objectReference: {fileID: 0}
     - target: {fileID: -1433695755364425506, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -18,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6270146691417982402, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
       propertyPath: m_Name
-      value: RespawningCoin
+      value: BountyCoin
       objectReference: {fileID: 0}
     - target: {fileID: 7169995947421543453, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -65,63 +69,29 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6270146691417982402, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: -7863731610441086368}
-    - targetCorrespondingSourceObject: {fileID: 6270146691417982402, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2290157416732887914}
+      addedObject: {fileID: 6976321909422938982}
   m_SourcePrefab: {fileID: 100100000, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
---- !u!1 &7791333652960456676 stripped
+--- !u!1 &469749110002333473 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6270146691417982402, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
-  m_PrefabInstance: {fileID: 4261647268833028646}
+  m_PrefabInstance: {fileID: 5872952721651397347}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-7863731610441086368
+--- !u!114 &6976321909422938982
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791333652960456676}
+  m_GameObject: {fileID: 469749110002333473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: 20638d4b25c27664995832a02f71937a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 0
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 0
-  SlerpPosition: 0
---- !u!114 &2290157416732887914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791333652960456676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81eb93d4f67af004b82635918ec03cbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 7873474943369642656}
---- !u!212 &7873474943369642656 stripped
+  spriteRenderer: {fileID: 567648442273438309}
+--- !u!212 &567648442273438309 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: -2999298247678039930, guid: 88ef34492d2f46d4aae2f2b9612ffd5a, type: 3}
-  m_PrefabInstance: {fileID: 4261647268833028646}
+  m_PrefabInstance: {fileID: 5872952721651397347}
   m_PrefabAsset: {fileID: 0}

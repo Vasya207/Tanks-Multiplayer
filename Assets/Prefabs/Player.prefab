@@ -900,6 +900,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66163a484242bb3499e00b8dffc191e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 1425137934397154372}
+  coinPrefab: {fileID: 6976321909422938982, guid: 569d818dbe879e9428edecdce1544ada, type: 3}
+  coinSpread: 3
+  bountyPercentage: 50
+  bountyCoinCount: 10
+  minBountyCoinValue: 5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
   TotalCoins:
     m_InternalValue: 0
 --- !u!1 &8084139049569065705
