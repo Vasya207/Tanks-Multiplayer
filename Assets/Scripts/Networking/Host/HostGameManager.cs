@@ -102,6 +102,8 @@ namespace Networking.Host
             
             NetworkManager.Singleton.StartHost();
 
+            NetworkServer.OnClientLeft += HandleClientLeft;
+
             NetworkManager.Singleton.SceneManager.LoadScene(GameSceneName, LoadSceneMode.Single);
         }
         
@@ -115,7 +117,12 @@ namespace Networking.Host
             }
         }
 
-        public async void Dispose()
+        public void Dispose()
+        {
+            Shutdown();
+        }
+
+        public async void Shutdown()
         {
             HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
 
@@ -129,11 +136,25 @@ namespace Networking.Host
                 {
                     Debug.Log(exception);
                 }
-
+                
                 _lobbyId = string.Empty;
             }
             
+            NetworkServer.OnClientLeft -= HandleClientLeft;
+            
             NetworkServer?.Dispose();
+        }
+
+        private async void HandleClientLeft(string authId)
+        {
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_lobbyId, authId);
+            }
+            catch (LobbyServiceException exception)
+            {
+                Debug.Log(exception);
+            }
         }
     }
 }

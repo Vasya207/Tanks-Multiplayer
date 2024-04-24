@@ -21,7 +21,12 @@ namespace Networking.Client
         private void OnClientDisconnect(ulong clientId)
         {
             if (clientId != 0 && clientId != _networkManager.LocalClientId) return;
+            
+            Disconnect();
+        }
 
+        public void Disconnect()
+        {
             if (SceneManager.GetActiveScene().name != MenuSceneName)
             {
                 SceneManager.LoadScene(MenuSceneName);
@@ -32,7 +37,7 @@ namespace Networking.Client
                 _networkManager.Shutdown();
             }
         }
-
+        
         public void Dispose()
         {
             if (_networkManager != null)
