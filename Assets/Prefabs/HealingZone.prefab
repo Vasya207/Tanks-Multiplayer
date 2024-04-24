@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healPowerBar: {fileID: 3430798501484108340}
   maxHealPower: 30
-  healCooldown: 60
+  healCooldown: 10
   healTickRate: 1
   coinsPerTick: 10
   healthPerTick: 10
