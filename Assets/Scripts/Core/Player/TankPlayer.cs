@@ -14,7 +14,8 @@ namespace Core.Player
 {
     public class TankPlayer : NetworkBehaviour
     {
-        [Header("References")]
+        [Header("References")] 
+        [SerializeField] private Texture2D crosshair;
         [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
         [SerializeField] private SpriteRenderer minimapIconRenderer;
         [field: SerializeField] public Health Health { get; private set; }
@@ -45,6 +46,8 @@ namespace Core.Player
             {
                 cinemachineVirtualCamera.Priority = ownerPriority;
                 minimapIconRenderer.color = ownerColor;
+                Cursor.SetCursor(
+                    crosshair, new Vector2(crosshair.width / 2, crosshair.height / 2), CursorMode.Auto);
             }
         }
 
