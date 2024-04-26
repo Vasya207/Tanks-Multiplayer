@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core;
 using Networking.Shared;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 namespace Networking.Server
@@ -22,6 +23,13 @@ namespace Networking.Server
 
             _networkManager.ConnectionApprovalCallback += ApprovalCheck;
             _networkManager.OnServerStarted += OnNetworkReady;
+        }
+
+        public bool OpenConnection(string ip, int port)
+        {
+            var transport = _networkManager.gameObject.GetComponent<UnityTransport>();
+            transport.SetConnectionData(ip, (ushort)port);
+            return _networkManager.StartServer();
         }
 
         private void ApprovalCheck(
