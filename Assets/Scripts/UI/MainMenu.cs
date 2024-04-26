@@ -35,7 +35,7 @@ namespace UI
             {
                 queueStatusText.text = "Cancelling...";
                 _isCancelling = true;
-                // Cancel matchmaking
+                await ClientSingleton.Instance.GameManager.CancelMatchmaking();
                 _isCancelling = false;
                 _isMatchmaking = false;
                 findMatchButtonText.text = "Find Match";
@@ -43,10 +43,32 @@ namespace UI
                 return;
             }
             
-            // Start queue
+            ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchMade);
             findMatchButtonText.text = "Cancel";
             queueStatusText.text = "Searching...";
             _isMatchmaking = true;
+        }
+
+        private void OnMatchMade(MatchmakerPollingResult result)
+        {
+            switch (result)
+            {
+                case MatchmakerPollingResult.Success:
+                    queueStatusText.text = "Connecting...";
+                    break;
+                case MatchmakerPollingResult.TicketCreationError:
+                    queueStatusText.text = "TickedCreationError";
+                    break;
+                case MatchmakerPollingResult.TicketCancellationError:
+                    queueStatusText.text = "TickedCancellationError";
+                    break;
+                case MatchmakerPollingResult.TicketRetrievalError:
+                    queueStatusText.text = "TickedRetrievalError";
+                    break;
+                case MatchmakerPollingResult.MatchAssignmentError:
+                    queueStatusText.text = "MatchAssignmentError";
+                    break;
+            }
         }
 
         public async void StartHost()

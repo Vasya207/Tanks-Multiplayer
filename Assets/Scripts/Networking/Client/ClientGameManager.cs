@@ -51,6 +51,13 @@ namespace Networking.Client
             SceneManager.LoadScene(MenuSceneName);
         }
 
+        private void StartClient(string ip, int port)
+        {
+            UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            transport.SetConnectionData(ip, (ushort)port);
+            ConnectClient();
+        }
+        
         public async Task StartClientAsync(string joinCode)
         {
             try
@@ -67,7 +74,11 @@ namespace Networking.Client
             RelayServerData relayServerData = new RelayServerData(_allocation, "dtls");
             
             transport.SetRelayServerData(relayServerData);
-            
+            ConnectClient();
+        }
+
+        private void ConnectClient()
+        {
             string payload = JsonUtility.ToJson(_userData);
             byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
 
@@ -76,13 +87,21 @@ namespace Networking.Client
             NetworkManager.Singleton.StartClient();
         }
 
+        public async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
+        {
+            if (_matchmaker.IsMatchmaking) return;
+
+            MatchmakerPollingResult matchResult = await GetMatchAsync();
+            onMatchmakeResponse?.Invoke(matchResult);
+        }
+
         private async Task<MatchmakerPollingResult> GetMatchAsync()
         {
             MatchmakingResult matchmakingResult = await _matchmaker.Matchmake(_userData);
 
             if (matchmakingResult.result == MatchmakerPollingResult.Success)
             {
-                // Connect to server
+                StartClient(matchmakingResult.ip, matchmakingResult.port);
             }
 
             return matchmakingResult.result;
@@ -96,6 +115,11 @@ namespace Networking.Client
         public void Dispose()
         {
             _networkClient?.Dispose();
+        }
+
+        public async Task CancelMatchmaking()
+        {
+            await _matchmaker.CancelMatchmaking();
         }
     }
 }

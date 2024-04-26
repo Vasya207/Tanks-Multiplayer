@@ -124,21 +124,20 @@ namespace Networking.Host
 
         public async void Shutdown()
         {
+            if (string.IsNullOrEmpty(_lobbyId)) return;
+            
             HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
-
-            if (string.IsNullOrEmpty(_lobbyId))
+           
+            try
             {
-                try
-                {
-                    await Lobbies.Instance.DeleteLobbyAsync(_lobbyId);
-                }
-                catch(LobbyServiceException exception)
-                {
-                    Debug.Log(exception);
-                }
-                
-                _lobbyId = string.Empty;
+                await Lobbies.Instance.DeleteLobbyAsync(_lobbyId);
             }
+            catch(LobbyServiceException exception)
+            {
+                Debug.Log(exception);
+            }
+            
+            _lobbyId = string.Empty;
             
             NetworkServer.OnClientLeft -= HandleClientLeft;
             
