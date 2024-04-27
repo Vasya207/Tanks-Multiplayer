@@ -25,16 +25,17 @@ namespace Networking.Server
         private int _serverPort;
         private int _queryPort;
         private MatchplayBackfiller _backfiller;
-        private NetworkServer _networkServer;
         private MultiplayAllocationService _multiplayAllocationService;
         private const string GameSceneName = "Game";
+        
+        public NetworkServer NetworkServer { get; private set; }
         
         public ServerGameManager(string serverIP, int serverPort, int queryPort, NetworkManager manager)
         {
             _serverIp = serverIP;
             _serverPort = serverPort;
             _queryPort = queryPort;
-            _networkServer = new NetworkServer(manager);
+            NetworkServer = new NetworkServer(manager);
             _multiplayAllocationService = new MultiplayAllocationService();
         }
         
@@ -49,8 +50,8 @@ namespace Networking.Server
                 if (matchmakerPayload != null)
                 {
                     await StartBackfill(matchmakerPayload);
-                    _networkServer.OnUserJoined += UserJoined;
-                    _networkServer.OnUserLeft += UserLeft;
+                    NetworkServer.OnUserJoined += UserJoined;
+                    NetworkServer.OnUserLeft += UserLeft;
                 }
                 else
                 {
@@ -62,7 +63,7 @@ namespace Networking.Server
                 Debug.LogWarning(exception);
             }
             
-            if(!_networkServer.OpenConnection(_serverIp, _serverPort))
+            if(!NetworkServer.OpenConnection(_serverIp, _serverPort))
             {
                 Debug.LogWarning("NetworkServer did not start as expected.");
                 return;
@@ -92,8 +93,10 @@ namespace Networking.Server
                 payload.MatchProperties, 
                 20);
 
-            if(_backfiller.NeedsPlayers())
+            if (_backfiller.NeedsPlayers())
+            {
                 await _backfiller.BeginBackfilling();
+            }
         }
 
         private void UserJoined(UserData user)
@@ -117,7 +120,7 @@ namespace Networking.Server
                 return;
             }
 
-            if (_backfiller.NeedsPlayers() && _backfiller.IsBackfilling)
+            if (_backfiller.NeedsPlayers() && !_backfiller.IsBackfilling)
             {
                 _ = _backfiller.BeginBackfilling();
             }
@@ -132,12 +135,12 @@ namespace Networking.Server
         
         public void Dispose()
         {
-            _networkServer.OnUserJoined -= UserJoined;
-            _networkServer.OnUserLeft -= UserLeft;
+            NetworkServer.OnUserJoined -= UserJoined;
+            NetworkServer.OnUserLeft -= UserLeft;
             
             _backfiller?.Dispose();
             _multiplayAllocationService?.Dispose();
-            _networkServer?.Dispose();
+            NetworkServer?.Dispose();
         }
     }
 }

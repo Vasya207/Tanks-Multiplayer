@@ -2,7 +2,6 @@ using System;
 using Networking.Client;
 using Networking.Host;
 using TMPro;
-using UnityEditor.Searcher;
 using UnityEngine;
 
 namespace UI

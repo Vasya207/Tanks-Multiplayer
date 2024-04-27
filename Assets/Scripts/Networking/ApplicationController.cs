@@ -12,6 +12,8 @@ namespace Networking
         [SerializeField] private ClientSingleton clientPrefab;
         [SerializeField] private HostSingleton hostPrefab;
         [SerializeField] private ServerSingleton serverPrefab;
+
+        private ApplicationData _appData;
         
         private async void Start()
         {
@@ -24,6 +26,7 @@ namespace Networking
         {
             if (isDedicatedServer)
             {
+                _appData = new ApplicationData();
                 ServerSingleton serverSingleton = Instantiate(serverPrefab);
                 await serverSingleton.CreateServer();
                 await serverSingleton.GameManager.StartGameServerAsync();
