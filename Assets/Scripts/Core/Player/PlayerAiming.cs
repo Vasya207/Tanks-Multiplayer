@@ -19,12 +19,18 @@ namespace Core.Player
             if (!IsOwner) return;
 
             Vector2 aimScreenPosition = inputReader.AimPosition;
+            
+#if UNITY_EDITOR || UNITY_EDITOR_WIN
             Vector2 aimWorldPosition = Camera.main.ScreenToWorldPoint(aimScreenPosition);
 
             turretTransform.up = new Vector2(
                 aimWorldPosition.x - turretTransform.position.x,
                 aimWorldPosition.y - turretTransform.position.y);
-            //turretTransform.up = (Vector2)_mainCamera.ScreenToWorldPoint(inputReader.AimPosition);
+#else
+            turretTransform.up = new Vector2(
+                aimScreenPosition.x,
+                aimScreenPosition.y);
+#endif
         }
     }
 }
