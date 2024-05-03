@@ -32,7 +32,7 @@ namespace Core.Player
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
-
+            
             inputReader.PrimaryFireEvent += HandlePrimaryFire;
         }
 
@@ -75,6 +75,27 @@ namespace Core.Player
         private void HandlePrimaryFire(bool shouldFire)
         {
             _isFiring = shouldFire;
+        }
+
+        public void FireOneTime()
+        {
+            if (_muzzleFlashTimer > 0f)
+            {
+                _muzzleFlashTimer -= Time.deltaTime;
+
+                if (_muzzleFlashTimer <= 0f)
+                {
+                    muzzleFlash.SetActive(false);
+                }
+            }
+            
+            if (!IsOwner) return;
+
+            if (coinWallet.TotalCoins.Value < costToFire) return;
+            
+            PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
+            
+            SpawnDummyProjectile(projectileSpawnPoint.position, projectileSpawnPoint.up);
         }
 
         [ServerRpc]
