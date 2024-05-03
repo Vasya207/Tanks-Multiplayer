@@ -8,21 +8,18 @@ namespace Input
 {
     public class AimStick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        private ProjectileLauncher _projectileLauncher;
-
-        private void Start()
-        {
-            _projectileLauncher = FindObjectOfType<ProjectileLauncher>();
-        }
+        public bool IsTouchingJoystick;
+        public event Action OnJoyStickReleased;
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            
+            IsTouchingJoystick = true;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            _projectileLauncher.FireOneTime();
+            IsTouchingJoystick = false;
+            OnJoyStickReleased?.Invoke();
         }
     }
 }

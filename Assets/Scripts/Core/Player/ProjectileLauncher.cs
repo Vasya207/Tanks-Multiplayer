@@ -4,6 +4,7 @@ using Core.Combat;
 using Input;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace Core.Player
@@ -28,19 +29,25 @@ namespace Core.Player
         private bool _isFiring;
         private float _muzzleFlashTimer;
         private float _timer;
+        private AimStick _aimStick;
 
         public override void OnNetworkSpawn()
         {
             if (!IsOwner) return;
-            
             inputReader.PrimaryFireEvent += HandlePrimaryFire;
+            
+            _aimStick = FindObjectOfType<AimStick>();
+            if(_aimStick == null)
+                SceneManager.sceneLoaded += OnSceneLoaded;
+            else 
+                _aimStick.OnJoyStickReleased += FireOneTime;
         }
 
         public override void OnNetworkDespawn()
         {
             if (!IsOwner) return;
-
             inputReader.PrimaryFireEvent -= HandlePrimaryFire;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         private void Update()
@@ -76,8 +83,14 @@ namespace Core.Player
         {
             _isFiring = shouldFire;
         }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            _aimStick = FindObjectOfType<AimStick>();
+            _aimStick.OnJoyStickReleased += FireOneTime;
+        }
 
-        public void FireOneTime()
+        private void FireOneTime()
         {
             if (_muzzleFlashTimer > 0f)
             {
