@@ -967,6 +967,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 308685521}
+  - component: {fileID: 308685522}
   m_Layer: 0
   m_Name: Joysticks
   m_TagString: Untagged
@@ -995,6 +996,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &308685522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308685520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df92611051214ed45975b9192aa6c73e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &332439643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4451,6 +4464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb649a4bdc01ae42a6a1b5341c2ca8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTouchingJoystick: 0
 --- !u!1001 &1698910185
 PrefabInstance:
   m_ObjectHideFlags: 0
