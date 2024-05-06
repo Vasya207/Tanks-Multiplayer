@@ -40,31 +40,34 @@ namespace Core.Player
         private void LateUpdate()
         {
             if (!IsOwner) return;
-#if UNITY_EDITOR || UNITY_EDITOR_WIN
-            
-            _aimScreenPosition = inputReader.AimPosition;
-            
-            Vector2 aimWorldPosition = Camera.main.ScreenToWorldPoint(_aimScreenPosition);
-            
-            turretTransform.up = new Vector2(
-                aimWorldPosition.x - turretTransform.position.x,
-                aimWorldPosition.y - turretTransform.position.y);
-#else
-            if (_aimStickFound)
+
+            if (Application.platform == RuntimePlatform.Android)
             {
-                if (_aimStick.IsTouchingJoystick)
+                if (_aimStickFound)
                 {
-                    if (inputReader.AimPosition != new Vector2(0, 0))
+                    if (_aimStick.IsTouchingJoystick)
                     {
-                        _aimScreenPosition = inputReader.AimPosition;
+                        if (inputReader.AimPosition != new Vector2(0, 0))
+                        {
+                            _aimScreenPosition = inputReader.AimPosition;
+                        }
                     }
                 }
-            }
 
-            turretTransform.up = new Vector2(
-                _aimScreenPosition.x,
-                _aimScreenPosition.y);
-#endif
+                turretTransform.up = new Vector2(
+                    _aimScreenPosition.x,
+                    _aimScreenPosition.y);
+            }
+            else
+            {
+                _aimScreenPosition = inputReader.AimPosition;
+            
+                Vector2 aimWorldPosition = Camera.main.ScreenToWorldPoint(_aimScreenPosition);
+            
+                turretTransform.up = new Vector2(
+                    aimWorldPosition.x - turretTransform.position.x,
+                    aimWorldPosition.y - turretTransform.position.y);
+            }
         }
     }
 }
